@@ -5,254 +5,395 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Predictive Maintenance for PC Cooling Systems</title>
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap");
 
-        /* Basic Reset & Theme Colors */
         :root {
-            --bg-dark: #0f172a;
-            --panel-dark: #1e293b;
-            --accent: #3b82f6;
-            --accent-light: #60a5fa;
-            --muted: #94a3b8;
-            --text: #e2e8f0;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --border-color: rgba(100, 116, 139, 0.3);
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #06b6d4;
             --success: #10b981;
-            --warning: #f97316;
-        }
-
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg-dark: #f1f5f9;
-                --panel-dark: #ffffff;
-                --accent: #2563eb;
-                --accent-light: #3b82f6;
-                --muted: #475569;
-                --text: #1e293b;
-                --card-bg: rgba(255, 255, 255, 0.8);
-                --border-color: rgba(203, 213, 225, 0.7);
-            }
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: rgba(148, 163, 184, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: "Roboto", sans-serif;
-            background-color: var(--bg-dark);
+            font-family: "Inter", sans-serif;
+            background: var(--bg);
             color: var(--text);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            padding: 24px;
-            line-height: 1.6;
+            overflow: hidden;
+            height: 100vh;
         }
 
-        .presentation { max-width: 1200px; margin: 0 auto; }
-
-        /* Slide Styling */
-        .slide {
-            background: var(--panel-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            margin-bottom: 32px;
-            padding: 48px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            page-break-after: always; /* For PDF printing */
-        }
-
-        .slide.title-slide {
-            background: linear-gradient(145deg, #1e3a8a 0%, var(--accent) 100%);
-            text-align: center;
-        }
-        
-        .slide.conclusion-slide, .slide.questions-slide {
-            background: linear-gradient(145deg, #064e3b 0%, var(--success) 100%);
-            text-align: center;
-        }
-
-        .slide-title {
-            font-family: "Poppins", sans-serif;
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 16px;
-            line-height: 1.2;
-        }
-
-        .slide-section-title {
-            font-family: "Poppins", sans-serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--accent-light);
-            margin-bottom: 24px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 12px;
-        }
-
-        .slide-subtitle {
-            font-size: 1.2rem;
-            color: var(--muted);
-            font-weight: 400;
-            margin-bottom: 24px;
-        }
-
-        /* Layouts */
-        .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-        .three-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
-
-        /* Components */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            backdrop-filter: blur(8px);
-            height: 100%;
-        }
-
-        .card-title {
-            font-family: "Poppins", sans-serif;
-            color: var(--accent-light);
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-        }
-
-        .card-content ul, .card-content ol { padding-left: 20px; }
-        .card-content li { margin-bottom: 8px; }
-
-        .highlight-box {
-            background: rgba(59, 130, 246, 0.1);
-            border-left: 4px solid var(--accent);
-            padding: 16px;
-            border-radius: 8px;
-            margin: 24px 0;
-            font-size: 1.05rem;
-        }
-        .disclaimer-box { background: rgba(249,115,22,0.1); border-left:4px solid var(--warning); padding:12px; border-radius:8px; color:var(--warning); margin-top:12px; }
-
-
-        /* Timeline Styling */
-        .timeline { 
-            position: relative; 
-            padding-left: 40px; 
-            border-left: 3px solid var(--accent);
-        }
-        .timeline-item { position: relative; margin-bottom: 24px; }
-        .timeline-item:last-child { margin-bottom: 0; }
-        .timeline-dot { position: absolute; left: -49.5px; top: 4px; width: 16px; height: 16px; background: var(--bg-dark); border: 3px solid var(--accent); border-radius: 50%; }
-        .timeline-title { font-family: "Poppins", sans-serif; font-weight: 600; font-size: 1.1rem; color: var(--text); margin-bottom: 4px; }
-        .timeline-desc { color: var(--muted); }
-
-        /* Image Placeholder */
-        .image-placeholder {
+        .presentation-container {
+            position: relative;
             width: 100%;
-            background: rgba(0,0,0,0.1);
-            border: 2px dashed var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            min-height: 300px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slides-wrapper {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            padding: 80px 120px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            overflow-y: auto;
         }
-        .image-placeholder-icon { font-size: 3rem; margin-bottom: 16px; color: var(--muted); }
-        .image-placeholder .img-wrap { width: 100%; }
-        .image-placeholder img { max-width: 100%; height: auto; border-radius: 8px; display: block; margin: 0 auto; }
 
-        /* Table Styling */
-        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .comparison-table th, .comparison-table td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border-color); }
-        .comparison-table th { font-family: "Poppins", sans-serif; background-color: rgba(59, 130, 246, 0.1); }
-        .comparison-table .traditional { color: #f87171; }
-        .comparison-table .smart { color: #4ade80; }
+        .slide::-webkit-scrollbar { width: 8px; }
+        .slide::-webkit-scrollbar-track { background: var(--surface); }
+        .slide::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
 
-        /* Footer */
-        .slide-footer {
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            justify-content: space-between;
+            gap: 16px;
+            z-index: 1000;
+            background: var(--surface);
+            padding: 16px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
             align-items: center;
-            margin-top: 32px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 16px;
-            color: var(--muted);
-            font-size: 0.9rem;
+            justify-content: center;
+            font-size: 20px;
         }
-        .company-name { font-weight: 600; color: var(--accent-light); }
-        
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 16px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .current-slide { color: var(--primary); font-weight: 700; font-size: 18px; }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--primary);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Slide Styles */
+        .slide-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            font-weight: 400;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 32px;
+            color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Title Slide */
+        .title-slide {
+            background: linear-gradient(135deg, #1e293b 0%, #312e81 50%, #1e40af 100%);
+            text-align: center;
+            justify-content: center;
+        }
+
+        .title-slide .slide-title {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        .presenter-info {
+            margin-top: 48px;
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+
+        .presenter-info strong { color: var(--primary-light); }
+
+        /* Grid Layouts */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card ul, .card ol { padding-left: 24px; }
+        .card li { margin-bottom: 12px; line-height: 1.6; }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 48px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -54px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timeline-desc {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table th {
+            background: var(--surface-light);
+            font-weight: 600;
+        }
+
+        .comparison-table .traditional { color: var(--danger); }
+        .comparison-table .smart { color: var(--success); }
+
+        /* Conclusion Slide */
+        .conclusion-slide {
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+            text-align: center;
+            justify-content: center;
+        }
+       
+
+        /* Keyboard hint */
+        .keyboard-hint {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background: var(--surface);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-muted);
+            opacity: 0;
+            animation: fadeInOut 4s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 1; }
+        }
+
         /* Responsive */
-        @media (max-width: 768px) {
-            body { padding: 12px; }
-            .slide { padding: 24px; }
-            .slide-title { font-size: 2rem; }
-            .slide-section-title { font-size: 1.5rem; }
+        @media (max-width: 1024px) {
+            .slide { padding: 60px 60px; }
+            .slide-title { font-size: 2.5rem; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
         }
 
-       @media print {
-  /* Preserve full color mode */
-  body {
-    background: var(--bg-dark) !important;
-    color: var(--text) !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
+        @media (max-width: 768px) {
+            .slide { padding: 40px 24px; }
+            .slide-title { font-size: 2rem; }
+            .nav-controls { bottom: 20px; padding: 12px 16px; }
+        }
 
-  .slide {
-    background: var(--panel-dark) !important;
-    color: var(--text) !important;
-    box-shadow: none;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    page-break-after: always;
-  }
+      /* Image and Figure Styling */
+.slide-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 32px 0;
+}
 
-  .slide.title-slide {
-    background: linear-gradient(145deg, #1e3a8a 0%, var(--accent) 100%) !important;
-  }
+.slide-image figure {
+  text-align: center;
+  width: 100%;
+}
 
-  .slide.conclusion-slide, .slide.questions-slide {
-    background: linear-gradient(145deg, #064e3b 0%, var(--success) 100%) !important;
-  }
+.slide-image img {
+  max-width: 1100px;        /* limits image width while allowing larger diagrams */
+  width: 95%;               /* increase to make it wider */
+  max-height: 600px;        /* optional, to prevent overly tall images */
+  height: auto;
+  object-fit: contain;
+  border-radius: 46px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  display: block;
+  margin: 0 auto;
+}
 
-  /* Ensure full color printing */
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
+.slide-image figcaption {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--accent-light);
+  margin-top: 10px;
+}
+
+.slide-image figcaption {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--accent-light);
+  margin-top: 10px;
 }
 
     </style>
 </head>
 <body>
-    <div class="presentation">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="keyboard-hint">Use ← → arrow keys or buttons to navigate</div>
 
-       <!-- Slide 1: Title -->
-<div class="slide title-slide">
-    <div class="slide-body">
-        <h1 class="slide-title">Design and Simulation of An AI-Based Smart Predictive Cooling Module</h1>
-        <p class="slide-subtitle" style="color: #dbeafe;">For PC System's Optimized Performance</p>
-        <div class="presenter-info" style="margin-top: 32px; color: #dbeafe;">
-            <p style="font-size: 1.1rem; margin-bottom: 10px;"><strong>By</strong></p>
-            <div style="font-size: 1.1rem; line-height: 1.8;">
-                <p style="margin: 8px 0;"><strong>Okeke Donald Chisom</strong> - 20201208763</p>
-                <p style="margin: 8px 0;"><strong>Iwuchukwu Miracle Chima</strong> - 20201233393</p>
-                <p style="margin: 8px 0;"><strong>Nwanne-Udeh Bruno Chinaza</strong> - 20201203523</p>
+    <div class="presentation-container">
+        <div class="slides-wrapper" id="slidesWrapper">
+            
+            <!-- Slide 1: Title -->
+            <div class="slide title-slide">
+                <h1 class="slide-title">Design and Simulation of An AI-Based Smart Predictive Cooling Module</h1>
+                <p class="slide-subtitle">For PC System's Optimized Performance</p>
+                <div class="presenter-info">
+                    <p style="margin-bottom: 24px; font-size: 1.2rem;"><strong>By</strong></p>
+                    <p><strong>Okeke Donald Chisom</strong> - 20201208763</p>
+                    <p><strong>Iwuchukwu Miracle Chima</strong> - 20201233393</p>
+                    <p><strong>Nwanne-Udeh Bruno Chinaza</strong> - 20201203523</p>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="slide-footer">
-        <div class="company-name">Project Presentation</div>
-        <div class="slide-number">1</div>
-    </div>
-</div>
-        <!-- Slide 2: Project Background -->
-        <div class="slide">
-            <div class="slide-section-title">📋 Project Background</div>
-            <div class="slide-body two-column">
-                <div class="card">
-                    <div class="card-title">⚠️ The Problem</div>
-                    <div class="card-content">
+
+            <!-- Slide 2: Project Background -->
+            <div class="slide">
+                <h2 class="section-title">📋 Project Background</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title">⚠ The Problem</div>
                         <ul>
                             <li>Modern PCs generate significant heat during intensive tasks</li>
                             <li>Traditional cooling systems use fixed temperature thresholds</li>
@@ -260,10 +401,8 @@
                             <li>Risk of hardware damage and unnecessary maintenance costs</li>
                         </ul>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">✅ Our Solution</div>
-                    <div class="card-content">
+                    <div class="card">
+                        <div class="card-title">✅ Our Solution</div>
                         <ul>
                             <li>Machine learning algorithms for anomaly detection</li>
                             <li>Real-time sensor data analysis</li>
@@ -273,206 +412,719 @@
                     </div>
                 </div>
             </div>
-            <div class="slide-footer">
-                <div class="company-name">Problem Definition</div>
-                <div class="slide-number">2</div>
-            </div>
-        </div>
 
-        <!-- Slide 3: Project Objectives -->
-        <div class="slide">
-            <div class="slide-section-title">🎯 Project Aims and Objectives</div>
-            <div class="slide-body">
+            <!-- Slide 3: Objectives -->
+            <div class="slide">
+                <h2 class="section-title">🎯 Project Aims and Objectives</h2>
                 <div class="highlight-box">
-                    <p><strong>Primary Aim:</strong> Create a smart predictive maintenance system for PC cooling that utilizes AI to analyze real-time sensor data and detect cooling system anomalies proactively.</p>
+                    <strong>Primary Aim:</strong> Create a smart predictive maintenance system for PC cooling that utilizes AI to analyze real-time sensor data and detect cooling system anomalies proactively.
                 </div>
-                <div class="three-column">
-                    <div class="card"><div class="card-title">Objective 1</div><div class="card-content">Monitor real-time cooling system data: temperature, fan speed, and CPU usage</div></div>
-                    <div class="card"><div class="card-title">Objective 2</div><div class="card-content">Preprocess and extract relevant features for machine learning analysis</div></div>
-                    <div class="card"><div class="card-title">Objective 3</div><div class="card-content">Implement anomaly detection with preventive maintenance suggestions</div></div>
-                    <div class="card"><div class="card-title">Objective 4</div><div class="card-content">Evaluate model accuracy using classification and clustering metrics</div></div>
-                    <div class="card"><div class="card-title">Objective 5</div><div class="card-content">Simulate real-time detection with early warning system</div></div>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-title">Objective 1</div>
+                        <p>Monitor real-time cooling system data: temperature, fan speed, and CPU usage</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Objective 2</div>
+                        <p>Preprocess and extract relevant features for machine learning analysis</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Objective 3</div>
+                        <p>Implement anomaly detection with preventive maintenance suggestions</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Objective 4</div>
+                        <p>Evaluate model accuracy using classification and clustering metrics</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Objective 5</div>
+                        <p>Simulate real-time detection with early warning system</p>
+                    </div>
                 </div>
             </div>
-            <div class="slide-footer">
-                <div class="company-name">Project Definition</div>
-                <div class="slide-number">3</div>
-            </div>
-        </div>
-        
-        <!-- Slide 4: Software Architecture -->
-        <div class="slide">
-            <div class="slide-section-title">🏗️ Software Architecture Diagram</div>
-            <div class="slide-body">
-                <div class="image-placeholder">
-                    <div class="image-placeholder-icon">🔧</div>
-                    <p><strong>Software Architecture Diagram</strong></p>
-                    <p>Complete system architecture with all modules and data flow</p>
-                    <p style="font-size: 0.85rem; color: var(--muted); margin-top: 8px;">Image: src="./assets/software-architecture.png"</p>
-                </div>
-                <div class="highlight-box"><strong>Core Modules:</strong> Data Acquisition → Data Preprocessing → Feature Extraction → Anomaly Detection → Alert System → User Interface</div>
-            </div>
-            <div class="slide-footer"><div class="company-name">Technical Design</div><div class="slide-number">4</div></div>
-        </div>
 
-        <!-- Slide 5: Block Diagram -->
-        <div class="slide">
-            <div class="slide-section-title">📐 Actual Block Diagram</div>
-            <div class="slide-body">
-                <div class="image-placeholder">
-                    <div class="image-placeholder-icon">📊</div>
-                    <p><strong>System Block Diagram</strong></p>
-                    <p>Hardware and component relationships</p>
-                    <p style="font-size: 0.85rem; color: var(--muted); margin-top: 8px;">Image: src="./assets/block-diagram.png"</p>
-                </div>
+            <!-- Slide 4: Software Architecture -->
+            <div class="slide">
+                <h2 class="section-title">🏗 Software Architecture Diagram</h2>
+                <div class="slide-image">
+            <figure>
+                <img src="./assets/software-architecture.png" alt="Software Architecture Diagram">
+                <figcaption>Figure 1: Software Architecture Diagram</figcaption>
+            </figure>
             </div>
-            <div class="slide-footer"><div class="company-name">System Components</div><div class="slide-number">5</div></div>
-        </div>
-        
-        <!-- Slide 6: Modules overview -->
-        <div class="slide">
-            <div class="slide-section-title">⚙️ System Modules Overview</div>
-            <div class="slide-body">
+
+
+            </div>
+
+            <!-- Slide 5: Block Diagram -->
+            <div class="slide">
+                <h2 class="section-title">📐 Actual Block Diagram</h2>
+                <div class="slide-image"><figure><img src="./assets/block-diagram.png" alt="System Block Diagram"><figcaption>Figure 2: System Block Diagram</figcaption></figure></div>
+            </div>
+
+            <!-- Slide 6: System Modules -->
+            <div class="slide">
+                <h2 class="section-title">⚙ System Modules Overview</h2>
                 <div class="timeline">
-                    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Data Acquisition Module</div><div class="timeline-desc">Detects available hardware interfaces, polls sensors for CPU/GPU temperature, fan speed, and CPU load with precise timestamps</div></div></div>
-                    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Data Preprocessing Module</div><div class="timeline-desc">Validates data integrity, handles missing values, applies normalization and smoothing filters, removes statistical outliers</div></div></div>
-                    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Feature Extraction Module</div><div class="timeline-desc">Calculates thermal metrics, fan performance indicators, and load correlations from preprocessed data</div></div></div>
-                    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Anomaly Detection Engine</div><div class="timeline-desc">Applies Isolation Forest ML algorithm to compute anomaly scores and classify as Normal or Faulty</div></div></div>
-                    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Alert System Module</div><div class="timeline-desc">Generates alerts with status, sensor data, and recommended actions; delivers via popup, sound, or notification</div></div></div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Data Acquisition Module</div>
+                        <div class="timeline-desc">Detects available hardware interfaces, polls sensors for CPU/GPU temperature, fan speed, and CPU load with precise timestamps</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Data Preprocessing Module</div>
+                        <div class="timeline-desc">Validates data integrity, handles missing values, applies normalization and smoothing filters, removes statistical outliers</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Feature Extraction Module</div>
+                        <div class="timeline-desc">Calculates thermal metrics, fan performance indicators, and load correlations from preprocessed data</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Anomaly Detection Engine</div>
+                        <div class="timeline-desc">Applies Isolation Forest ML algorithm to compute anomaly scores and classify as Normal or Faulty</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Alert System Module</div>
+                        <div class="timeline-desc">Generates alerts with status, sensor data, and recommended actions; delivers via popup, sound, or notification</div>
+                    </div>
                 </div>
             </div>
-            <div class="slide-footer"><div class="company-name">Module Architecture</div><div class="slide-number">6</div></div>
-        </div>
 
-        <!-- Slide 7: Operation Flowchart -->
-        <div class="slide">
-            <div class="slide-section-title">📈 Operation Flowchart</div>
-            <div class="slide-body">
-                <div class="image-placeholder">
-                    <div class="image-placeholder-icon">🔄</div>
-                    <p><strong>Software Operation Flowchart</strong></p>
-                    <p>Complete system workflow and decision logic</p>
-                    <p style="font-size: 0.85rem; color: var(--muted); margin-top: 8px;">Image: src="./assets/operation-flowchart.png"</p>
+            <!-- Slide 7: Operation Flowchart -->
+            <div class="slide">
+                <h2 class="section-title">📈 Operation Flowchart</h2>
+                <div class="slide-image"><figure><img src="./assets/operation-flowchart.png" alt="Software Operation Flowchart"><figcaption>Figure 3: Software Operation Flowchart</figcaption></figure></div>
+            </div>
+
+            <!-- Slide 8: Technology Stack -->
+            <div class="slide">
+                <h2 class="section-title">🛠 Technology Stack</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-title">🔧 Backend</div>
+                        <ul>
+                            <li>Python 3.9+</li>
+                            <li>scikit-learn</li>
+                            <li>NumPy & Pandas</li>
+                            <li>Isolation Forest Algorithm</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🎨 Frontend</div>
+                        <ul>
+                            <li>Streamlit</li>
+                            <li>Plotly</li>
+                            <li>Interactive Dashboard</li>
+                            <li>Real-time Visualizations</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📡 Data Source</div>
+                        <ul>
+                            <li>Hardware Sensors</li>
+                            <li>Simulated Data</li>
+                            <li>1-5 Hz Sampling Rate</li>
+                            <li>Real-time Polling</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="slide-footer"><div class="company-name">Process Flow</div><div class="slide-number">7</div></div>
-        </div>
 
-        <!-- Slide 8: Technology Stack -->
-        <div class="slide">
-            <div class="slide-section-title">🛠️ Technology Stack</div>
-            <div class="slide-body three-column">
-                <div class="card"><div class="card-title">🔧 Backend</div><div class="card-content"><ul><li>Python 3.9+</li><li>scikit-learn</li><li>NumPy & Pandas</li><li>Isolation Forest Algorithm</li></ul></div></div>
-                <div class="card"><div class="card-title">🎨 Frontend</div><div class="card-content"><ul><li>Streamlit</li><li>Plotly</li><li>Interactive Dashboard</li><li>Real-time Visualizations</li></ul></div></div>
-                <div class="card"><div class="card-title">📡 Data Source</div><div class="card-content"><ul><li>Hardware Sensors</li><li>Simulated Data</li><li>1-5 Hz Sampling Rate</li><li>Real-time Polling</li></ul></div></div>
-            </div>
-            <div class="slide-footer"><div class="company-name">Implementation Stack</div><div class="slide-number">8</div></div>
-        </div>
-
-        <!-- Continue with all original slides... -->
-        
-        <!-- Slide 9: Data Collection -->
-        <div class="slide">
-          <div class="slide-section-title">📊 Data Acquisition Strategy</div>
-          <div class="slide-body two-column">
-              <div class="timeline">
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Sensor Data Collection</div><div class="timeline-desc">CPU temperature, GPU temperature, fan speed (RPM), and CPU load with millisecond precision</div></div></div>
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Operational Modes</div><div class="timeline-desc"><strong>Simulated Mode:</strong> Synthetic data generation for testing and algorithm validation</div></div></div>
-                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Data Validation</div><div class="timeline-desc">Format verification, range checking, and completeness validation for all readings</div></div></div>
-              </div>
-              <div class="card">
-                <div class="card-title">🔧 Implementation Notes</div>
-                <div class="card-content">
-                  The system is configured for comprehensive testing and development using simulated data. This approach allows for:
-                  <ul><li>Rapid algorithm validation</li><li>Controlled scenario testing</li><li>Fault injection capabilities</li><li>Performance benchmarking</li></ul>
-                </div>
-              </div>
-          </div>
-          <div class="slide-footer"><div class="company-name">Data Acquisition</div><div class="slide-number">9</div></div>
-        </div>
-
-        <!-- Slide 10: Feature Engineering -->
-        <div class="slide">
-            <div class="slide-section-title">⚙️ Feature Extraction & Engineering</div>
-            <div class="slide-body">
-                <div class="highlight-box"><strong>Sliding Window Analysis:</strong> Data divided into time windows with calculated statistics and patterns for each window</div>
-                <div class="three-column">
-                    <div class="card"><div class="card-title">🌡️ Thermal Metrics</div><div class="card-content"><ul><li>Average temperature</li><li>Temperature extrema</li><li>Temperature gradient</li><li>Rate of change</li><li>Variance analysis</li></ul></div></div>
-                    <div class="card"><div class="card-title">💨 Fan Performance</div><div class="card-content"><ul><li>RPM fluctuation</li><li>Speed stability</li><li>Response lag</li><li>Efficiency ratio</li><li>Variability index</li></ul></div></div>
-                    <div class="card"><div class="card-title">📊 Load Correlation</div><div class="card-content"><ul><li>CPU load patterns</li><li>Temperature-load ratio</li><li>Usage patterns</li><li>Anomalous trends</li><li>Statistical features</li></ul></div></div>
+            <!-- Slide 9: Data Acquisition -->
+            <div class="slide">
+                <h2 class="section-title">📊 Data Acquisition Strategy</h2>
+                <div class="grid-2">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-title">Sensor Data Collection</div>
+                            <div class="timeline-desc">CPU temperature, GPU temperature, fan speed (RPM), and CPU load with millisecond precision</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-title">Operational Modes</div>
+                            <div class="timeline-desc"><strong>Simulated Mode:</strong> Synthetic data generation for testing and algorithm validation</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-title">Data Validation</div>
+                            <div class="timeline-desc">Format verification, range checking, and completeness validation for all readings</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔧 Implementation Notes</div>
+                        <p>The system is configured for comprehensive testing using simulated data. This allows for:</p>
+                        <ul>
+                            <li>Rapid algorithm validation</li>
+                            <li>Controlled scenario testing</li>
+                            <li>Fault injection capabilities</li>
+                            <li>Performance benchmarking</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="slide-footer"><div class="company-name">Feature Extraction</div><div class="slide-number">10</div></div>
-        </div>
 
-        <!-- Slide 11: Machine Learning Model -->
-        <div class="slide">
-            <div class="slide-section-title">🤖 Machine Learning - Isolation Forest</div>
-            <div class="slide-body">
-                <div class="two-column">
-                    <div class="card"><div class="card-title">Training Phase</div><div class="card-content"><ul><li>Uses initial system operation (warm-up period)</li><li>Establishes baseline "healthy" behavior</li><li>Learns normal operating envelope</li><li>Adapts to individual system characteristics</li><li>Dynamic threshold calibration</li></ul></div></div>
-                    <div class="card"><div class="card-title">Detection Phase</div><div class="card-content"><ul><li>Continuous feature analysis</li><li>Real-time anomaly scoring</li><li>Deviation from baseline comparison</li><li>Severity scaling (0-100%)</li><li>Regular update intervals</li></ul></div></div>
+            <!-- Slide 10: Feature Engineering -->
+            <div class="slide">
+                <h2 class="section-title">⚙ Feature Extraction & Engineering</h2>
+                <div class="highlight-box">
+                    <strong>Sliding Window Analysis:</strong> Data divided into time windows with calculated statistics and patterns for each window
                 </div>
-                <div class="highlight-box"><strong>Algorithm Choice:</strong> Isolation Forest selected for its effectiveness in detecting anomalies in high-dimensional data without requiring distance metrics or explicit density models</div>
-            </div>
-            <div class="slide-footer"><div class="company-name">ML Implementation</div><div class="slide-number">11</div></div>
-        </div>
-
-        <!-- Slide 12: Dashboard -->
-        <div class="slide">
-            <div class="slide-section-title">📊 Interactive Dashboard</div>
-            <div class="slide-body">
-                <div class="image-placeholder">
-                    <div class="image-placeholder-icon">🖥️</div>
-                    <p><strong>Streamlit Dashboard Screenshot</strong></p>
-                    <p>Real-time system status and monitoring interface</p>
-                    <p style="font-size: 0.85rem; color: var(--muted); margin-top: 8px;">Image: src="./assets/dashboard-screenshot.png"</p>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-title">🌡 Thermal Metrics</div>
+                        <ul>
+                            <li>Average temperature</li>
+                            <li>Temperature extrema</li>
+                            <li>Temperature gradient</li>
+                            <li>Rate of change</li>
+                            <li>Variance analysis</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">💨 Fan Performance</div>
+                        <ul>
+                            <li>RPM fluctuation</li>
+                            <li>Speed stability</li>
+                            <li>Response lag</li>
+                            <li>Efficiency ratio</li>
+                            <li>Variability index</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📊 Load Correlation</div>
+                        <ul>
+                            <li>CPU load patterns</li>
+                            <li>Temperature-load ratio</li>
+                            <li>Usage patterns</li>
+                            <li>Anomalous trends</li>
+                            <li>Statistical features</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="highlight-box"><strong>Interface Features:</strong> Real-time metrics display • Health status indicators • Severity scoring • Action recommendations • Historical timeline • Data export options</div>
             </div>
-            <div class="slide-footer"><div class="company-name">User Interface</div><div class="slide-number">12</div></div>
-        </div>
 
-        <!-- ... All other slides from 13 to 28 restored here ... -->
-        <div class="slide"><div class="slide-section-title">✨ User Interface Capabilities</div><div class="slide-body"><div class="three-column"><div class="card"><div class="card-title">📈 Real-Time Monitoring</div><div class="card-content">Live display of sensor readings with time-series visualization and historical data tracking</div></div><div class="card"><div class="card-title">⚠️ Status Indicators</div><div class="card-content">Color-coded health status (🟢 Normal, 🟡 Warning, 🔴 Faulty) with numeric severity percentages</div></div><div class="card"><div class="card-title">💡 Smart Recommendations</div><div class="card-content">AI-generated maintenance suggestions based on current system state and detected patterns</div></div><div class="card"><div class="card-title">⏰ Anomaly History</div><div class="card-content">Complete timeline view of detected anomalies and status transitions with timestamps</div></div><div class="card"><div class="card-title">🎛️ Configuration Panel</div><div class="card-content">Adjustable parameters including alert thresholds, analysis windows, and model settings</div></div><div class="card"><div class="card-title">📥 Data Export</div><div class="card-content">Download analysis results as CSV files or PDF reports for further analysis</div></div></div></div><div class="slide-footer"><div class="company-name">Interface Features</div><div class="slide-number">13</div></div></div>
-        <div class="slide"><div class="slide-section-title">🔄 Data Preprocessing Pipeline</div><div class="slide-body"><div class="timeline"><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Data Validation</div><div class="timeline-desc">Check format consistency, verify sensor reading ranges, ensure no missing values in critical fields</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Data Cleaning</div><div class="timeline-desc">Handle missing values through interpolation, correct erroneous readings, remove transient noise</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Normalization</div><div class="timeline-desc">Apply Min-Max or Z-score standardization for uniform data distribution across all features</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Smoothing & Filtering</div><div class="timeline-desc">Apply Moving Average or Savitzky-Golay filters to reduce noise and highlight trends</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Outlier Detection</div><div class="timeline-desc">Identify and remove statistical outliers that could skew model training and predictions</div></div></div></div></div><div class="slide-footer"><div class="company-name">Data Processing</div><div class="slide-number">14</div></div></div>
-        <div class="slide"><div class="slide-section-title">🚨 Anomaly Detection & Alert System</div><div class="slide-body"><div class="two-column"><div class="card"><div class="card-title">Detection Process</div><div class="card-content"><ol><li>Feature vector computed from preprocessed data</li><li>Isolation Forest model applies scoring</li><li>Anomaly score compared to threshold</li><li>Dynamic threshold adjustment if needed</li><li>Results sent to alert system</li></ol></div></div><div class="card"><div class="card-title">Alert Generation</div><div class="card-content"><ul><li>Status classification (Normal/Warning/Faulty)</li><li>Current sensor readings</li><li>Recommended maintenance actions</li><li>Multi-channel delivery (popup, sound, notification)</li><li>Comprehensive logging and tracking</li></ul></div></div></div></div><div class="slide-footer"><div class="company-name">Alert Management</div><div class="slide-number">15</div></div></div>
-        <div class="slide"><div class="slide-section-title">🧪 Simulation & Testing Capabilities</div><div class="slide-body"><div class="three-column"><div class="card"><div class="card-title">🟢 Normal Operation</div><div class="card-content">Simulates baseline healthy system behavior with stable temperatures and responsive cooling to establish reference baseline</div></div><div class="card"><div class="card-title">🟡 Degradation Scenarios</div><div class="card-content">Tests algorithm response to simulated faults: fan slowdown, dust clogging, thermal paste degradation</div></div><div class="card"><div class="card-title">🔴 Extreme Conditions</div><div class="card-content">Environmental stress testing with high ambient temperatures and sustained system overload</div></div><div class="card"><div class="card-title">📊 Load Profiles</div><div class="card-content">Multiple load patterns: idle spikes, gradual ramps, sine wave patterns for comprehensive testing</div></div><div class="card"><div class="card-title">⏱️ Configurable Duration</div><div class="card-content">Variable test lengths (30 seconds to 2 hours) with adjustable sampling rates (1-5 Hz)</div></div><div class="card"><div class="card-title">🔬 Fault Injection</div><div class="card-content">Ability to inject faults mid-simulation to test system responsiveness and detection accuracy</div></div></div></div><div class="slide-footer"><div class="company-name">Testing Framework</div><div class="slide-number">16</div></div></div>
-        <div class="slide"><div class="slide-section-title">📊 Model Evaluation & Metrics</div><div class="slide-body"><div class="highlight-box"><strong>Evaluation Approach:</strong> The system employs standard classification and clustering metrics to assess model performance. Validation is performed across multiple simulated scenarios to ensure robust detection capabilities.</div><div class="three-column"><div class="card"><div class="card-title">Detection Classification</div><div class="card-content">Precision, Recall, and F1-Score metrics for anomaly detection accuracy</div></div><div class="card"><div class="card-title">Response Timing</div><div class="card-content">Time from anomaly onset to detection trigger measurement</div></div><div class="card"><div class="card-title">False Positive Rate</div><div class="card-content">Percentage of incorrect alerts on normal operations</div></div></div></div><div class="slide-footer"><div class="company-name">Performance Evaluation</div><div class="slide-number">17</div></div></div>
-        <div class="slide"><div class="slide-section-title">⭐ Key System Features</div><div class="slide-body"><div class="timeline"><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Adaptive Learning</div><div class="timeline-desc">Models automatically calibrate to individual system characteristics for optimal baseline establishment</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Multi-Modal Analysis</div><div class="timeline-desc">Simultaneous processing of thermal, load, and airflow data streams for comprehensive assessment</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Robust Signal Processing</div><div class="timeline-desc">Advanced filtering eliminates transient noise and false triggers through exponential smoothing and hysteresis</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Modular Architecture</div><div class="timeline-desc">Clean separation of concerns enables easy extension, maintenance, and future enhancements</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">User-Centric Design</div><div class="timeline-desc">Intuitive web-based dashboard with real-time visualizations and actionable recommendations</div></div></div></div></div><div class="slide-footer"><div class="company-name">Feature Highlights</div><div class="slide-number">18</div></div></div>
-        <div class="slide"><div class="slide-section-title">🎓 Technical Excellence & Innovation</div><div class="slide-body"><div class="three-column"><div class="card"><div class="card-title">🔬 Innovation</div><div class="card-content">Novel application of anomaly detection algorithms to thermal management with practical real-world impact and preventive capabilities</div></div><div class="card"><div class="card-title">📚 Knowledge Integration</div><div class="card-content">Demonstrates expertise in ML algorithms, signal processing, systems programming, and full-stack application development</div></div><div class="card"><div class="card-title">🏗️ Software Architecture</div><div class="card-content">Clean, modular design with proper separation of concerns enabling scalability, maintainability, and testability</div></div><div class="card"><div class="card-title">⚙️ Implementation Quality</div><div class="card-content">Production-ready code with robust error handling, validation, comprehensive documentation, and best practices</div></div><div class="card"><div class="card-title">🔍 Rigorous Validation</div><div class="card-content">Comprehensive testing across multiple scenarios with systematic performance evaluation and metrics collection</div></div><div class="card"><div class="card-title">💼 Professional Approach</div><div class="card-content">Industry-standard practices, clear communication, detailed documentation, and user-centric design philosophy</div></div></div></div><div class="slide-footer"><div class="company-name">Project Quality</div><div class="slide-number">19</div></div></div>
-        <div class="slide"><div class="slide-section-title">🛡️ Technical Challenges & Solutions</div><div class="slide-body"><div class="two-column"><div class="card"><div class="card-title">⚠️ Challenge 1: System Variability</div><div class="card-content">Different PC configurations have unique thermal characteristics and baseline patterns<br /><br /><strong style="color: var(--success)">✓ Solution:</strong> Adaptive per-system calibration and baseline learning during warm-up period</div></div><div class="card"><div class="card-title">⚠️ Challenge 2: Noisy Data</div><div class="card-content">Sensor fluctuations can trigger false alerts and reduce model reliability<br /><br /><strong style="color: var(--success)">✓ Solution:</strong> Exponential smoothing, hysteresis filtering, and dwell-time logic</div></div><div class="card"><div class="card-title">⚠️ Challenge 3: Baseline Establishment</div><div class="card-content">Insufficient healthy data compromises model training quality<br /><br /><strong style="color: var(--success)">✓ Solution:</strong> Configurable warm-up period with dynamic threshold adjustment</div></div><div class="card"><div class="card-title">⚠️ Challenge 4: Scalability</div><div class="card-content">Need to handle variable monitoring durations and multiple sensor streams<br /><br /><strong style="color: var(--success)">✓ Solution:</strong> Modular architecture supporting configurable analysis parameters</div></div></div></div><div class="slide-footer"><div class="company-name">Problem Solving</div><div class="slide-number">20</div></div></div>
-        <div class="slide"><div class="slide-section-title">🚀 Deployment & Quick Start</div><div class="slide-body"><div class="timeline"><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Step 1: Environment Setup</div><div class="timeline-desc">Execute setup script to create Python virtual environment and install all required dependencies</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Step 2: Application Launch</div><div class="timeline-desc">Run application via batch script or direct Streamlit execution for web-based interface</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Step 3: Configure Parameters</div><div class="timeline-desc">Set monitoring duration, sampling rate, warm-up period, and alert thresholds via configuration panel</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Step 4: Start Monitoring</div><div class="timeline-desc">Click "Start Analysis" button to begin data collection and real-time anomaly detection</div></div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-title">Step 5: View & Export Results</div><div class="timeline-desc">Monitor real-time dashboard, review historical data, and export analysis results as needed</div></div></div></div></div><div class="slide-footer"><div class="company-name">Getting Started</div><div class="slide-number">21</div></div></div>
-        <div class="slide"><div class="slide-section-title">✅ Implementation Status</div><div class="slide-body"><div class="three-column"><div class="card"><div class="card-title">✓ Completed Modules</div><div class="card-content"><ul><li>Data acquisition pipeline</li><li>Preprocessing engine</li><li>Feature extraction module</li><li>ML model training</li><li>Alert system</li><li>Web dashboard</li></ul></div></div><div class="card"><div class="card-title">✓ Testing & Validation</div><div class="card-content"><ul><li>Simulated scenarios</li><li>Fault injection testing</li><li>Performance benchmarking</li><li>Model evaluation</li><li>Signal processing validation</li></ul></div></div><div class="card"><div class="card-title">✓ Documentation</div><div class="card-content"><ul><li>Code documentation</li><li>User guides</li><li>Architecture diagrams</li><li>Algorithm documentation</li><li>API reference</li></ul></div></div></div></div><div class="slide-footer"><div class="company-name">Project Status</div><div class="slide-number">22</div></div></div>
-        <div class="slide"><div class="slide-section-title">💼 Business Value & Applications</div><div class="slide-body"><div class="highlight-box"><strong>Core Value Proposition:</strong> Prevents costly hardware failures through early detection, reduces unplanned downtime, minimizes maintenance expenses, and extends component lifespan</div><div class="three-column"><div class="card"><div class="card-title">💼 Enterprise Systems</div><div class="card-content">Monitor multiple workstations and minimize productivity loss through predictive maintenance scheduling</div></div><div class="card"><div class="card-title">🎮 High-Performance Systems</div><div class="card-content">Prevent thermal failures during intensive gaming, streaming, or computational workloads</div></div><div class="card"><div class="card-title">🖥️ Personal Computers</div><div class="card-content">Help individual users optimize cooling performance and extend hardware investment lifespan</div></div><div class="card"><div class="card-title">📚 Educational Use</div><div class="card-content">Learn about ML algorithms, system monitoring, and predictive analytics through practical application</div></div><div class="card"><div class="card-title">🔬 Research Platform</div><div class="card-content">Study thermal behavior patterns and optimize cooling system designs based on real data</div></div><div class="card"><div class="card-title">⚙️ System Optimization</div><div class="card-content">Analyze cooling efficiency and provide data-driven recommendations for system improvements</div></div></div></div><div class="slide-footer"><div class="company-name">Use Cases</div><div class="slide-number">23</div></div></div>
-        <div class="slide"><div class="slide-section-title">✓ Comprehensive Testing Framework</div><div class="slide-body"><div class="two-column"><div class="card"><div class="card-title">Functional Testing</div><div class="card-content"><ul><li>Data acquisition validation</li><li>Feature extraction accuracy</li><li>Model inference correctness</li><li>Alert system triggering</li><li>Dashboard responsiveness</li></ul></div></div><div class="card"><div class="card-title">Scenario-Based Testing</div><div class="card-content"><ul><li>Normal baseline operation</li><li>Gradual degradation patterns</li><li>Sudden fault conditions</li><li>Environmental extremes</li><li>System recovery verification</li></ul></div></div></div><div class="highlight-box"><strong>Validation Metrics:</strong> Classification accuracy, detection responsiveness, false positive rates, and system stability across diverse operational conditions</div></div><div class="slide-footer"><div class="company-name">Testing & QA</div><div class="slide-number">24</div></div></div>
-        <div class="slide"><div class="slide-section-title">🖥️ Local System Architecture</div><div class="slide-body"><div class="image-placeholder"><div class="image-placeholder-icon">🏗️</div><p><strong>Local Deployment Architecture</strong></p><p>System deployment on local machines for comprehensive testing and validation</p><p style="font-size: 0.85rem; color: var(--muted); margin-top: 8px;">Image: src="./assets/deployment-architecture.png"</p></div><div class="disclaimer-box"><strong>📌 Note on Implementation:</strong> The system is optimized for local deployment with simulated sensor data collection. This approach enables comprehensive algorithm validation, controlled testing scenarios, and detailed performance benchmarking. The simulated mode provides complete feature parity for all analysis and monitoring capabilities.</div></div><div class="slide-footer"><div class="company-name">Deployment Architecture</div><div class="slide-number">25</div></div></div>
-        <div class="slide"><div class="slide-section-title">🚀 Future Development Roadmap</div><div class="slide-body"><div class="three-column"><div class="card"><div class="card-title">Phase 1: Advanced ML</div><div class="card-content"><ul><li>LSTM integration</li><li>Deep learning models</li><li>Ensemble methods</li><li>Transfer learning</li></ul></div></div><div class="card"><div class="card-title">Phase 2: Expansion</div><div class="card-content"><ul><li>REST API development</li><li>Mobile applications</li><li>Cloud integration</li><li>Multi-system fleet management</li></ul></div></div><div class="card"><div class="card-title">Phase 3: Enterprise</div><div class="card-content"><ul><li>Automated control systems</li><li>Hardware partnerships</li><li>SaaS platform</li><li>Enterprise analytics suite</li></ul></div></div></div></div><div class="slide-footer"><div class="company-name">Future Vision</div><div class="slide-number">26</div></div></div>
-        <div class="slide"><div class="slide-section-title">📊 Traditional vs Smart Predictive Approach</div><div class="slide-body"><table class="comparison-table"><thead><tr><th>Aspect</th><th class="traditional">Traditional Monitoring</th><th class="smart">Smart Predictive System</th></tr></thead><tbody><tr><td><strong>Detection Type</strong></td><td class="traditional">Reactive (after failure)</td><td class="smart">Proactive (before failure)</td></tr><tr><td><strong>Advance Warning</strong></td><td class="traditional">None</td><td class="smart">15-30 minutes early</td></tr><tr><td><strong>Intelligence Level</strong></td><td class="traditional">Fixed thresholds</td><td class="smart">ML-driven analysis</td></tr><tr><td><strong>Adaptability</strong></td><td class="traditional">Low (static rules)</td><td class="smart">High (adaptive learning)</td></tr><tr><td><strong>Maintenance Cost</strong></td><td class="traditional">High (reactive repairs)</td><td class="smart">Low (preventive care)</td></tr><tr><td><strong>Hardware Risk</strong></td><td class="traditional">High (failure exposure)</td><td class="smart">Low (early intervention)</td></tr><tr><td><strong>User Experience</strong></td><td class="traditional">Disruptive failures</td><td class="smart">Uninterrupted operation</td></tr></tbody></table></div><div class="slide-footer"><div class="company-name">Comparative Analysis</div><div class="slide-number">27</div></div></div>
-        <div class="slide"><div class="slide-section-title">📚 Research Contributions</div><div class="slide-body"><div class="three-column"><div class="card"><div class="card-title">Algorithm Development</div><div class="card-content">Applied Isolation Forest with novel calibration techniques for thermal anomaly detection in resource-constrained environments</div></div><div class="card"><div class="card-title">Signal Processing</div><div class="card-content">Developed adaptive filtering and hysteresis logic to reduce false positives while maintaining early detection capability</div></div><div class="card"><div class="card-title">System Architecture</div><div class="card-content">Created modular, extensible architecture demonstrating separation of concerns and practical software engineering principles</div></div><div class="card"><div class="card-title">Real-Time Processing</div><div class="card-content">Implemented efficient feature extraction and inference pipelines suitable for continuous monitoring applications</div></div><div class="card"><div class="card-title">Practical Application</div><div class="card-content">Demonstrated ML effectiveness in solving real-world hardware reliability challenges with measurable business impact</div></div><div class="card"><div class="card-title">Educational Value</div><div class="card-content">Comprehensive case study in end-to-end ML implementation from data collection through production deployment</div></div></div></div><div class="slide-footer"><div class="company-name">Academic Contributions</div><div class="slide-number">28</div></div></div>
-
-        <!-- Slide 29: Questions -->
-        <div class="slide questions-slide">
-             <div class="slide-body" style="padding: 60px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 50vh;">
-                <h2 class="slide-title" style="font-size: 4rem;">Questions?</h2>
-                <p class="slide-subtitle" style="color: #dbeafe; font-size: 1.5rem;">Thank you for your attention.</p>
+            <!-- Slide 11: ML Model -->
+            <div class="slide">
+                <h2 class="section-title">🤖 Machine Learning - Isolation Forest</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title">Training Phase</div>
+                        <ul>
+                            <li>Uses initial system operation (warm-up period)</li>
+                            <li>Establishes baseline "healthy" behavior</li>
+                            <li>Learns normal operating envelope</li>
+                            <li>Adapts to individual system characteristics</li>
+                            <li>Dynamic threshold calibration</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Detection Phase</div>
+                        <ul>
+                            <li>Continuous feature analysis</li>
+                            <li>Real-time anomaly scoring</li>
+                            <li>Deviation from baseline comparison</li>
+                            <li>Severity scaling (0-100%)</li>
+                            <li>Regular update intervals</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight-box" style="margin-top: 32px;">
+                    <strong>Algorithm Choice:</strong> Isolation Forest selected for its effectiveness in detecting anomalies in high-dimensional data without requiring distance metrics or explicit density models
+                </div>
             </div>
-            <div class="slide-footer">
-                <div class="company-name">Q&A</div>
-                <div class="slide-number">29</div>
-            </div>
-        </div>
 
-        <!-- Slide 30: Conclusion -->
-        <div class="slide conclusion-slide">
-            <div class="slide-body" style="padding: 60px 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 50vh;">
-                <h2 class="slide-title">Conclusion</h2>
-                <p class="slide-subtitle" style="max-width: 800px; margin: 0 auto 32px auto; color: #dbeafe;">
+            <!-- Slide 12: Dashboard -->
+            <div class="slide">
+                <h2 class="section-title">📊 Interactive Dashboard</h2>
+                <div class="slide-image"><figure><img src="./assets/dashboard-screenshot.png" alt="Streamlit Dashboard Screenshot"><figcaption>Figure 4: Streamlit Dashboard Screenshot</figcaption></figure></div>
+                <div class="highlight-box" style="margin-top: 32px;">
+                    <strong>Interface Features:</strong> Real-time metrics display • Health status indicators • Severity scoring • Action recommendations • Historical timeline • Data export options
+                </div>
+            </div>
+
+            <!-- Slide 13: UI Capabilities -->
+            <div class="slide">
+                <h2 class="section-title">✨ User Interface Capabilities</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-title">📈 Real-Time Monitoring</div>
+                        <p>Live display of sensor readings with time-series visualization and historical data tracking</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⚠ Status Indicators</div>
+                        <p>Color-coded health status (🟢 Normal, 🟡 Warning, 🔴 Faulty) with numeric severity percentages</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">💡 Smart Recommendations</div>
+                        <p>AI-generated maintenance suggestions based on current system state and detected patterns</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⏰ Anomaly History</div>
+                        <p>Complete timeline view of detected anomalies and status transitions with timestamps</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🎛 Configuration Panel</div>
+                        <p>Adjustable parameters including alert thresholds, analysis windows, and model settings</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📥 Data Export</div>
+                        <p>Download analysis results as CSV files or PDF reports for further analysis</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 14: Data Preprocessing -->
+            <div class="slide">
+                <h2 class="section-title">🔄 Data Preprocessing Pipeline</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Data Validation</div>
+                        <div class="timeline-desc">Check format consistency, verify sensor reading ranges, ensure no missing values in critical fields</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Data Cleaning</div>
+                        <div class="timeline-desc">Handle missing values through interpolation, correct erroneous readings, remove transient noise</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Normalization</div>
+                        <div class="timeline-desc">Apply Min-Max or Z-score standardization for uniform data distribution across all features</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Smoothing & Filtering</div>
+                        <div class="timeline-desc">Apply Moving Average or Savitzky-Golay filters to reduce noise and highlight trends</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Outlier Detection</div>
+                        <div class="timeline-desc">Identify and remove statistical outliers that could skew model training and predictions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 15: Alert System -->
+            <div class="slide">
+                <h2 class="section-title">🚨 Anomaly Detection & Alert System</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title">Detection Process</div>
+                        <ol>
+                            <li>Feature vector computed from preprocessed data</li>
+                            <li>Isolation Forest model applies scoring</li>
+                            <li>Anomaly score compared to threshold</li>
+                            <li>Dynamic threshold adjustment if needed</li>
+                            <li>Results sent to alert system</li>
+                        </ol>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Alert Generation</div>
+                        <ul>
+                            <li>Status classification (Normal/Warning/Faulty)</li>
+                            <li>Current sensor readings</li>
+                            <li>Recommended maintenance actions</li>
+                            <li>Multi-channel delivery (popup, sound, notification)</li>
+                            <li>Comprehensive logging and tracking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 16: Testing -->
+            <div class="slide">
+                <h2 class="section-title">🧪 Simulation & Testing Capabilities</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-title">🟢 Normal Operation</div>
+                        <p>Simulates baseline healthy system behavior with stable temperatures and responsive cooling to establish reference baseline</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🟡 Degradation Scenarios</div>
+                        <p>Tests algorithm response to simulated faults: fan slowdown, dust clogging, thermal paste degradation</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔴 Extreme Conditions</div>
+                        <p>Environmental stress testing with high ambient temperatures and sustained system overload</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📊 Load Profiles</div>
+                        <p>Multiple load patterns: idle spikes, gradual ramps, sine wave patterns for comprehensive testing</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⏱ Configurable Duration</div>
+                        <p>Variable test lengths (30 seconds to 2 hours) with adjustable sampling rates (1-5 Hz)</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔬 Fault Injection</div>
+                        <p>Ability to inject faults mid-simulation to test system responsiveness and detection accuracy</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 17: Model Evaluation -->
+            <div class="slide">
+                <h2 class="section-title">📊 Model Evaluation & Metrics</h2>
+                <div class="highlight-box">
+                    <strong>Evaluation Approach:</strong> The system employs standard classification and clustering metrics to assess model performance. Validation is performed across multiple simulated scenarios to ensure robust detection capabilities.
+                </div>
+                <div class="grid-3" style="margin-top: 32px;">
+                    <div class="card">
+                        <div class="card-title">Detection Classification</div>
+                        <p>Precision, Recall, and F1-Score metrics for anomaly detection accuracy</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Response Timing</div>
+                        <p>Time from anomaly onset to detection trigger measurement</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">False Positive Rate</div>
+                        <p>Percentage of incorrect alerts on normal operations</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 18: Key Features -->
+            <div class="slide">
+                <h2 class="section-title">⭐ Key System Features</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Adaptive Learning</div>
+                        <div class="timeline-desc">Models automatically calibrate to individual system characteristics for optimal baseline establishment</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Multi-Modal Analysis</div>
+                        <div class="timeline-desc">Simultaneous processing of thermal, load, and airflow data streams for comprehensive assessment</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Robust Signal Processing</div>
+                        <div class="timeline-desc">Advanced filtering eliminates transient noise and false triggers through exponential smoothing and hysteresis</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Modular Architecture</div>
+                        <div class="timeline-desc">Clean separation of concerns enables easy extension, maintenance, and future enhancements</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">User-Centric Design</div>
+                        <div class="timeline-desc">Intuitive web-based dashboard with real-time visualizations and actionable recommendations</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 19: Technical Excellence -->
+            <div class="slide">
+                <h2 class="section-title">🎓 Technical Excellence & Innovation</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-title">🔬 Innovation</div>
+                        <p>Novel application of anomaly detection algorithms to thermal management with practical real-world impact and preventive capabilities</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📚 Knowledge Integration</div>
+                        <p>Demonstrates expertise in ML algorithms, signal processing, systems programming, and full-stack application development</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🏗 Software Architecture</div>
+                        <p>Clean, modular design with proper separation of concerns enabling scalability, maintainability, and testability</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⚙ Implementation Quality</div>
+                        <p>Production-ready code with robust error handling, validation, comprehensive documentation, and best practices</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔍 Rigorous Validation</div>
+                        <p>Comprehensive testing across multiple scenarios with systematic performance evaluation and metrics collection</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">💼 Professional Approach</div>
+                        <p>Industry-standard practices, clear communication, detailed documentation, and user-centric design philosophy</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 20: Challenges & Solutions -->
+            <div class="slide">
+                <h2 class="section-title">🛡 Technical Challenges & Solutions</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title">⚠ Challenge 1: System Variability</div>
+                        <p style="margin-bottom: 16px;">Different PC configurations have unique thermal characteristics and baseline patterns</p>
+                        <p style="color: var(--success);"><strong>✓ Solution:</strong> Adaptive per-system calibration and baseline learning during warm-up period</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⚠ Challenge 2: Noisy Data</div>
+                        <p style="margin-bottom: 16px;">Sensor fluctuations can trigger false alerts and reduce model reliability</p>
+                        <p style="color: var(--success);"><strong>✓ Solution:</strong> Exponential smoothing, hysteresis filtering, and dwell-time logic</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⚠ Challenge 3: Baseline Establishment</div>
+                        <p style="margin-bottom: 16px;">Insufficient healthy data compromises model training quality</p>
+                        <p style="color: var(--success);"><strong>✓ Solution:</strong> Configurable warm-up period with dynamic threshold adjustment</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⚠ Challenge 4: Scalability</div>
+                        <p style="margin-bottom: 16px;">Need to handle variable monitoring durations and multiple sensor streams</p>
+                        <p style="color: var(--success);"><strong>✓ Solution:</strong> Modular architecture supporting configurable analysis parameters</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 21: Deployment -->
+            <div class="slide">
+                <h2 class="section-title">🚀 Deployment & Quick Start</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Step 1: Environment Setup</div>
+                        <div class="timeline-desc">Execute setup script to create Python virtual environment and install all required dependencies</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Step 2: Application Launch</div>
+                        <div class="timeline-desc">Run application via batch script or direct Streamlit execution for web-based interface</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Step 3: Configure Parameters</div>
+                        <div class="timeline-desc">Set monitoring duration, sampling rate, warm-up period, and alert thresholds via configuration panel</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Step 4: Start Monitoring</div>
+                        <div class="timeline-desc">Click "Start Analysis" button to begin data collection and real-time anomaly detection</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Step 5: View & Export Results</div>
+                        <div class="timeline-desc">Monitor real-time dashboard, review historical data, and export analysis results as needed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 22: Implementation Status -->
+            <div class="slide">
+                <h2 class="section-title">✅ Implementation Status</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-title">✓ Completed Modules</div>
+                        <ul>
+                            <li>Data acquisition pipeline</li>
+                            <li>Preprocessing engine</li>
+                            <li>Feature extraction module</li>
+                            <li>ML model training</li>
+                            <li>Alert system</li>
+                            <li>Web dashboard</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">✓ Testing & Validation</div>
+                        <ul>
+                            <li>Simulated scenarios</li>
+                            <li>Fault injection testing</li>
+                            <li>Performance benchmarking</li>
+                            <li>Model evaluation</li>
+                            <li>Signal processing validation</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">✓ Documentation</div>
+                        <ul>
+                            <li>Code documentation</li>
+                            <li>User guides</li>
+                            <li>Architecture diagrams</li>
+                            <li>Algorithm documentation</li>
+                            <li>API reference</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 23: Business Value -->
+            <div class="slide">
+                <h2 class="section-title">💼 Business Value & Applications</h2>
+                <div class="highlight-box">
+                    <strong>Core Value Proposition:</strong> Prevents costly hardware failures through early detection, reduces unplanned downtime, minimizes maintenance expenses, and extends component lifespan
+                </div>
+                <div class="grid-3" style="margin-top: 32px;">
+                    <div class="card">
+                        <div class="card-title">💼 Enterprise Systems</div>
+                        <p>Monitor multiple workstations and minimize productivity loss through predictive maintenance scheduling</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🎮 High-Performance Systems</div>
+                        <p>Prevent thermal failures during intensive gaming, streaming, or computational workloads</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🖥 Personal Computers</div>
+                        <p>Help individual users optimize cooling performance and extend hardware investment lifespan</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📚 Educational Use</div>
+                        <p>Learn about ML algorithms, system monitoring, and predictive analytics through practical application</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔬 Research Platform</div>
+                        <p>Study thermal behavior patterns and optimize cooling system designs based on real data</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⚙ System Optimization</div>
+                        <p>Analyze cooling efficiency and provide data-driven recommendations for system improvements</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 24: Testing Framework -->
+            <div class="slide">
+                <h2 class="section-title">✓ Comprehensive Testing Framework</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title">Functional Testing</div>
+                        <ul>
+                            <li>Data acquisition validation</li>
+                            <li>Feature extraction accuracy</li>
+                            <li>Model inference correctness</li>
+                            <li>Alert system triggering</li>
+                            <li>Dashboard responsiveness</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Scenario-Based Testing</div>
+                        <ul>
+                            <li>Normal baseline operation</li>
+                            <li>Gradual degradation patterns</li>
+                            <li>Sudden fault conditions</li>
+                            <li>Environmental extremes</li>
+                            <li>System recovery verification</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight-box" style="margin-top: 32px;">
+                    <strong>Validation Metrics:</strong> Classification accuracy, detection responsiveness, false positive rates, and system stability across diverse operational conditions
+                </div>
+            </div>
+
+            <!-- Slide 25: Deployment Architecture -->
+            <div class="slide">
+                <h2 class="section-title">🖥 Local System Architecture</h2>
+               <div class="slide-image"><figure><img src="./assets/deployment-architecture.png" alt="Local Deployment Architecture"><figcaption>Figure 5: Local Deployment Architecture</figcaption></figure></div>
+                <div class="highlight-box" style="margin-top: 32px; background: rgba(245, 158, 11, 0.1); border-color: var(--warning);">
+                    <strong>📌 Note on Implementation:</strong> The system is optimized for local deployment with simulated sensor data collection. This approach enables comprehensive algorithm validation, controlled testing scenarios, and detailed performance benchmarking.
+                </div>
+            </div>
+
+            <!-- Slide 26: Future Roadmap -->
+            <div class="slide">
+                <h2 class="section-title">🚀 Future Development Roadmap</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-title">Phase 1: Advanced ML</div>
+                        <ul>
+                            <li>LSTM integration</li>
+                            <li>Deep learning models</li>
+                            <li>Ensemble methods</li>
+                            <li>Transfer learning</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Phase 2: Expansion</div>
+                        <ul>
+                            <li>REST API development</li>
+                            <li>Mobile applications</li>
+                            <li>Cloud integration</li>
+                            <li>Multi-system fleet management</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Phase 3: Enterprise</div>
+                        <ul>
+                            <li>Automated control systems</li>
+                            <li>Hardware partnerships</li>
+                            <li>SaaS platform</li>
+                            <li>Enterprise analytics suite</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 27: Comparison -->
+            <div class="slide">
+                <h2 class="section-title">📊 Traditional vs Smart Predictive Approach</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th class="traditional">Traditional Monitoring</th>
+                            <th class="smart">Smart Predictive System</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Detection Type</strong></td>
+                            <td class="traditional">Reactive (after failure)</td>
+                            <td class="smart">Proactive (before failure)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Advance Warning</strong></td>
+                            <td class="traditional">None</td>
+                            <td class="smart">15-30 minutes early</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Intelligence Level</strong></td>
+                            <td class="traditional">Fixed thresholds</td>
+                            <td class="smart">ML-driven analysis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Adaptability</strong></td>
+                            <td class="traditional">Low (static rules)</td>
+                            <td class="smart">High (adaptive learning)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Maintenance Cost</strong></td>
+                            <td class="traditional">High (reactive repairs)</td>
+                            <td class="smart">Low (preventive care)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hardware Risk</strong></td>
+                            <td class="traditional">High (failure exposure)</td>
+                            <td class="smart">Low (early intervention)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>User Experience</strong></td>
+                            <td class="traditional">Disruptive failures</td>
+                            <td class="smart">Uninterrupted operation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Slide 28: Research Contributions -->
+            <div class="slide">
+                <h2 class="section-title">📚 Research Contributions</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-title">Algorithm Development</div>
+                        <p>Applied Isolation Forest with novel calibration techniques for thermal anomaly detection in resource-constrained environments</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Signal Processing</div>
+                        <p>Developed adaptive filtering and hysteresis logic to reduce false positives while maintaining early detection capability</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">System Architecture</div>
+                        <p>Created modular, extensible architecture demonstrating separation of concerns and practical software engineering principles</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Real-Time Processing</div>
+                        <p>Implemented efficient feature extraction and inference pipelines suitable for continuous monitoring applications</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Practical Application</div>
+                        <p>Demonstrated ML effectiveness in solving real-world hardware reliability challenges with measurable business impact</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Educational Value</div>
+                        <p>Comprehensive case study in end-to-end ML implementation from data collection through production deployment</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 29: Conclusion -->
+            <div class="slide conclusion-slide">
+                <h1 class="slide-title">Conclusion</h1>
+                <p class="slide-subtitle" style="max-width: 900px; margin: 0 auto 48px auto;">
                     A comprehensive AI-based system that combines real-time sensor analysis, machine learning algorithms, intelligent signal processing, and user-centric design to detect and predict PC cooling system anomalies before they lead to hardware failure.
                 </p>
-                <div class="highlight-box" style="text-align: left; max-width: 700px; margin: 0 auto; border-color: var(--success); background: rgba(16, 185, 129, 0.1);">
+                <div class="highlight-box" style="text-align: left; max-width: 700px; margin: 0 auto; border-color: var(--success); background: rgba(16, 185, 129, 0.15);">
                     <strong>Project Summary:</strong>
-                    <ul style="padding-left: 20px; margin-top: 8px;">
+                    <ul style="padding-left: 24px; margin-top: 12px; line-height: 1.8;">
                         <li>Proactive anomaly detection system</li>
                         <li>Advanced signal processing and filtering</li>
                         <li>Scalable modular architecture</li>
@@ -481,38 +1133,117 @@
                     </ul>
                 </div>
             </div>
-            <div class="slide-footer">
-                <div class="company-name">Project Summary</div>
-                <div class="slide-number">30</div>
-            </div>
-        </div>
 
+            <!-- Slide 30: Q&A -->
+            <div class="slide conclusion-slide">
+                <h1 class="slide-title" style="font-size: 5rem; margin-bottom: 32px;">Questions?</h1>
+                <p class="slide-subtitle" style="font-size: 1.8rem;">Thank you for your attention.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" onclick="prevSlide()">←</button>
+        <div class="slide-counter">
+            <span class="current-slide" id="currentSlide">1</span>
+            <span>/</span>
+            <span id="totalSlides">30</span>
+        </div>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">→</button>
     </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // This script finds image placeholders and replaces them with actual image tags.
-      document.querySelectorAll(".image-placeholder").forEach((div) => {
-        // Check if there's already an image to avoid re-processing
-        if (div.querySelector('img')) return;
-        
-        const text = div.innerText || '';
-        const match = text.match(/Image:\s*src="([^"]+)"/);
-        
-        if (match) {
-          const src = match[1].trim();
-          const altText = div.querySelector("p")?.innerText || "Presentation Diagram";
-          
-          // Clear the placeholder and insert the image
-          div.innerHTML = `
-            <div class="img-wrap">
-              <img src="${src}" alt="${altText.replace(/"/g, '&quot;')}" loading="lazy">
-            </div>
-          `;
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const slidesWrapper = document.getElementById('slidesWrapper');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentSlideEl = document.getElementById('currentSlide');
+        const totalSlidesEl = document.getElementById('totalSlides');
+        const progressBar = document.getElementById('progressBar');
+
+        totalSlidesEl.textContent = totalSlides;
+
+        function updateSlide() {
+            slidesWrapper.style.transform = translateX(-${currentSlide * 100}vw);
+            currentSlideEl.textContent = currentSlide + 1;
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
         }
-      });
-    });
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                nextSlide();
+            }
+            if (touchEndX > touchStartX + 50) {
+                prevSlide();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".image-placeholder").forEach((div) => {
+                if (div.querySelector('img')) return;
+                
+                const pathEl = div.querySelector('.image-path');
+                if (pathEl) {
+                    const text = pathEl.textContent;
+                    const match = text.match(/src="([^"]+)"/);
+                    
+                    if (match) {
+                        const src = match[1].trim();
+                        const img = document.createElement('img');
+                        img.src = src;
+                        img.alt = "Presentation Diagram";
+                        img.loading = "lazy";
+                        
+                        // Insert image after the description text and before the path
+                        pathEl.parentNode.insertBefore(img, pathEl);
+                    }
+                }
+            });
+        });
+
+        updateSlide();
     </script>
 </body>
 </html>
-
